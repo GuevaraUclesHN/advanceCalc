@@ -223,8 +223,8 @@ string AssignationStatement::genCode(){
     return ststCode.code;
 }
 
-void LteExpr::genCode(Code &code){
-    Code leftCode;
+void GteExpr::genCode(Code &code){
+    Code leftCode; 
     Code rightCode;
     stringstream ss;
     this->expr1->genCode(leftCode);
@@ -232,7 +232,7 @@ void LteExpr::genCode(Code &code){
     ss << leftCode.code <<endl<< rightCode.code<<endl;
     releaseFloatTemp(leftCode.place);
     releaseFloatTemp(rightCode.place);
-    ss<< "c.le.s "<< leftCode.place<< ", "<< rightCode.place<<endl;
+    ss<< "c.lt.s "<< rightCode.place<< ", "<< leftCode.place<<endl;
     code.code = ss.str();
 }
 
@@ -245,7 +245,7 @@ void LteExpr::genCode(Code &code){
     ss << leftCode.code <<endl<< rightCode.code<<endl;
     releaseFloatTemp(leftCode.place);
     releaseFloatTemp(rightCode.place);
-    ss<< "c.le.s "<< leftCode.place<< ", "<< rightCode.place<<endl;
+    ss<< "c.lt.s "<< leftCode.place<< ", "<< rightCode.place<<endl;
     code.code = ss.str();
 }
 
@@ -258,12 +258,16 @@ void EqExpr::genCode(Code &code){
     ss << leftCode.code <<endl<< rightCode.code<<endl;
     releaseFloatTemp(leftCode.place);
     releaseFloatTemp(rightCode.place);
-    ss<< "c.lt.s "<< rightCode.place<< ", "<< leftCode.place<<endl;
+    ss<<"c.eq.s "<<leftCode.place<<" , "<< rightCode.place<<endl;
     code.code = ss.str();
 }
 
 void ReadFloatExpr::genCode(Code &code){
-
+ stringstream ss;
+    ss <<code.code<<endl;
+    ss<<"li $v0, 6"<<endl
+    <<"syscall"<<endl;
+    code.code = ss.str();
 }
 
 string PrintStatement::genCode(){
